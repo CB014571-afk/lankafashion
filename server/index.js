@@ -8,8 +8,8 @@ const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const sellerRoutes = require("./routes/sellerRoutes");
-const supplierRoutes = require("./routes/supplierRoutes"); // <-- supplier routes
-const preOrderRoutes = require("./routes/preOrderRoutes"); // <-- added preOrder routes
+const supplierRoutes = require("./routes/supplierRoutes");
+const preOrderRoutes = require("./routes/preOrderRoutes");
 const shopRoutes = require("./routes/shopRoutes");
 const materialOrderRoutes = require("./routes/materialOrderRoutes");
 
@@ -36,37 +36,17 @@ app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/seller", sellerRoutes);
-app.use("/api/supplier", supplierRoutes); // <-- added supplier routes here
-app.use("/api/preorder", preOrderRoutes); // <-- added preOrder routes here
+app.use("/api/supplier", supplierRoutes);
+app.use("/api/preorder", preOrderRoutes);
 app.use("/api/shops", shopRoutes);
 app.use("/api/material-orders", materialOrderRoutes);
 
 // MongoDB connection and server start
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ MongoDB Connected");
-  const PORT = process.env.PORT || 5050;
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error("❌ MongoDB Connection Error:", err.message);
-  });
-
-// MongoDB connection and server start
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("✅ MongoDB Connected");
-    const PORT = process.env.PORT || 5000;
+    const PORT = process.env.PORT || 5000; // Render assigns PORT automatically
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
