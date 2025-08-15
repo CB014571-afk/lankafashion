@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios"; // ✅ Added
+import API from "../api"; // ✅ Use the configured axios instance
 import AddToCartModal from "../components/AddToCartModal";
 import "./Shop.css";
 
@@ -19,7 +19,7 @@ export default function Shop() {
 
       if (shopName) {
         // Shop details & products
-        const res = await axios.get(
+        const res = await API.get(
           `/api/shops/${encodeURIComponent(shopName.trim())}`
         );
         setProducts(res.data.products || []);
@@ -33,7 +33,7 @@ export default function Shop() {
         // All products (optionally filtered by category)
         const query = [];
         if (category) query.push(`category=${encodeURIComponent(category)}`);
-        const res = await axios.get(`/api/products/search?${query.join("&")}`);
+        const res = await API.get(`/api/products/search?${query.join("&")}`);
         setProducts(res.data);
         setShopInfo(null);
       }
@@ -46,7 +46,7 @@ export default function Shop() {
 
   const fetchMeta = async () => {
     try {
-      const res = await axios.get("/api/products/meta");
+      const res = await API.get("/api/products/meta");
       setCategories(res.data.categories || []);
       setShopNames(res.data.shopNames || []);
     } catch (err) {
@@ -182,7 +182,7 @@ export default function Shop() {
             shopName: selectedProduct.shopName,
             price: selectedProduct.price,
             _id: selectedProduct._id,
-            sellerId: selectedProduct.seller?._id || selectedProduct.seller, // Always pass ObjectId string
+            sellerId: selectedProduct.seller?._id || selectedProduct.seller,
           }}
           onClose={() => setSelectedProduct(null)}
         />
