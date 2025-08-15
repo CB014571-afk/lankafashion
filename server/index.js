@@ -17,14 +17,29 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
-app.use(express.json());
+// ===== CORS Setup =====
+const allowedOrigins = [
+  process.env.CLIENT_URL || "http://localhost:5173", // Local dev or env
+  "https://lankafashion-hazel.vercel.app"           // Production frontend
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps, Postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("CORS policy: Origin not allowed"));
+      }
+    },
     credentials: true,
   })
 );
+
+// Middleware
+app.use(express.json());
 
 // Root test route
 app.get("/", (req, res) => {
